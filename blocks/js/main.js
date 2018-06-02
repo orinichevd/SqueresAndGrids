@@ -72,7 +72,6 @@ function animate() {
 
     requestAnimationFrame(animate);
     recomposeBlock(cubes);
-    recomposeBlock(cubes2);
     var luck = Math.random();
     if (expolesed) {
         ticksAfterExplosion++;
@@ -87,8 +86,6 @@ function animate() {
     cubes.rotation.x = cubes.rotation.x + 0.01;
     cubes.rotation.z = cubes.rotation.z + 0.01;
 
-    cubes2.rotation.x = cubes2.rotation.x + 0.01;
-    cubes2.rotation.y = cubes2.rotation.y + 0.01;
     
     if (camera.position.z > 410) {
         camera.position.z -= 10 * 0.05;

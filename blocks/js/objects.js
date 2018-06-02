@@ -7,7 +7,7 @@ var materials = [],
 
 // cubes
 var clength = 150, cwidth = 150, cheight = 150;
-var csize = 15;
+var csize = 10;
 var ccount;
 var  cubes;
 var cubes2;
@@ -64,30 +64,7 @@ function initCube() {
     //cubes.position.x = 300;
     scene.add(cubes);
 
-    cubes2 = new THREE.Object3D();
 
-    var material = new THREE.MeshPhongMaterial({
-        color: 0xAAAAAA,
-        shading: THREE.FlatShading
-    });
-
-    ccount = clength * cwidth * cheight / (csize * csize * csize);
-    for (var i = 0; i < clength / csize; i++) {
-        for (var j = 0; j < cwidth / csize; j++) {
-            for (var k = 0; k < cheight / csize; k++) {
-                var cube = new THREE.Mesh(new THREE.BoxGeometry(csize - Math.random() * 4, csize - Math.random() * 4, csize - Math.random() * 4), material);
-                cube.position.x = -clength / 2 + i * csize;
-                cube.position.y = -cwidth / 2 + j * csize;
-                cube.position.z = -cheight / 2 + k * csize;
-
-                cubes2.add(cube);
-            }
-        }
-    }
-    cubes2.position.y = -90;
-    cubes2.position.x = -300;
-
-    //scene.add(cubes2);
 }
 
 function particles() {
