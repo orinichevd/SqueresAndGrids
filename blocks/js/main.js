@@ -16,6 +16,8 @@ var expolesed = false;
 var ticksAfterExplosion;
 var expolosionTime;
 
+var tweenBoom = [];
+var tweenBack = [];
 
 var helper;
 
@@ -52,6 +54,14 @@ function init() {
     gui.add( effectController, "maxblur", 0.0, 3.0, 0.025 ).onChange( matChanger );
     gui.close();*/
     matChanger();
+    createTweenBoom();
+    createTweenBack();
+    for (var i=0; i<tweenBoom.length; i++){
+        tweenBoom[i].chain(tweenBack[i]);
+    }
+    for (var i=0; i<tweenBoom.length; i++){
+        tweenBack[i].start();
+    }
 }
 
 var maxRemoveCount = -1000;
@@ -67,48 +77,35 @@ function recomposeBlock(cube) {
 
 }
 
-function move() {
+
+
+function createTweenBack( ) {
     for (var i = 0; i < clength / csize; i++) {
         for (var j = 0; j < cwidth / csize; j++) {
             for (var k = 0; k < cheight / csize; k++) {
                 var cube = cubes.children[i + j * (clength / csize) + k * (clength / csize) * (cwidth / csize)]
-                if (i < clength / csize / 3) {
-                    cube.rotation.x += 0.1;
-                } else if (i > 2 * clength / csize / 3) {
-                    cube.rotation.x -= 0.1;
-                }
-
-
+                tweenBack.push(new TWEEN.Tween( cube.position ).to( {
+                    x: -clength / 2 + i * csize,
+                    y: -cwidth / 2 + j * csize,
+                    z: -cheight / 2 + k * csize
+                }, 1000)
+                .easing( TWEEN.Easing.Cubic.InOut ));
             }
         }
     }
 }
 
-function booom() {
-    effectGlitch.enabled = true;
+
+function createTweenBoom( ) {
     for (var i = 0; i < ccount; i++) {
         var cube = cubes.children[i];
-        cube.position.x = cube.position.x + Math.random() * 200 - 100;
-        cube.position.y = cube.position.y + Math.random() * 200 - 100;
-        cube.position.z = cube.position.z + Math.random() * 200 - 100;
-    }
-    expolesed = true;
-    ticksAfterExplosion = 0;
-}
-
-function restore() {
-    effectGlitch.enabled = false;
-    for (var i = 0; i < clength / csize; i++) {
-        for (var j = 0; j < cwidth / csize; j++) {
-            for (var k = 0; k < cheight / csize; k++) {
-                var cube = cubes.children[i + j * (clength / csize) + k * (clength / csize) * (cwidth / csize)]
-                cube.position.x = -clength / 2 + i * csize;
-                cube.position.y = -cwidth / 2 + j * csize;
-                cube.position.z = -cheight / 2 + k * csize;
-            }
-        }
-    }
-    expolesed = false;
+        tweenBoom.push(new TWEEN.Tween( cube.position ).to( {
+            x: cube.position.x + Math.random() * 400 - 200,
+            y: cube.position.y + Math.random() * 400 - 200,
+            z: cube.position.z + Math.random() * 400 - 200
+        }, 5000)
+        .easing( TWEEN.Easing.Cubic.InOut ));
+    }  
 }
 
 function animate() {
@@ -116,15 +113,12 @@ function animate() {
     requestAnimationFrame(animate);
     recomposeBlock(cubes);
     var luck = Math.random();
-    //move();
-    if (expolesed) {
-        ticksAfterExplosion++;
-    }
-    if (expolesed && ticksAfterExplosion >= maxTicksAfterExplosion) {
-        restore();
-    }
-    if (luck < 0.003 && !expolesed) {
-        booom()
+    
+    if (luck < 0.003) {
+        for (var i=0; i<tweenBoom.length; i++){
+            tweenBoom[i].start();
+        }
+        effectGlitch.enabled = !effectGlitch.enabled;
     }
 
     cubes.rotation.x = cubes.rotation.x + 0.01;
@@ -141,7 +135,7 @@ function animate() {
         camera.position.z = 400;
 
     }
-    //console.log(camera.position);
+    TWEEN.update();
     camera.lookAt(scene.position);
     composer.render(scene,camera);
 
