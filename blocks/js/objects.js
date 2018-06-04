@@ -44,14 +44,14 @@ function initCube() {
         color: 0xFFFFFF,
         shading: THREE.FlatShading,
         transparent: true,
-        opacity: 0.1
+        opacity: 0.3
     });
 
     ccount = clength * cwidth * cheight / (csize * csize * csize);
     for (var i = 0; i < clength / csize; i++) {
         for (var j = 0; j < cwidth / csize; j++) {
             for (var k = 0; k < cheight / csize; k++) {
-                var cube = new THREE.Mesh(new THREE.BoxGeometry(csize - Math.random() * 4, csize - Math.random() * 4, csize - Math.random() * 4), material);
+                var cube = new THREE.Mesh(new THREE.BoxGeometry(csize - 3, csize - 3, csize - 3), material);
                 cube.position.x = -clength / 2 + i * csize;
                 cube.position.y = -cwidth / 2 + j * csize;
                 cube.position.z = -cheight / 2 + k * csize;
@@ -61,7 +61,6 @@ function initCube() {
         }
     }
     cubes.position.y = -140;
-    //cubes.position.x = 300;
     scene.add(cubes);
 
 
@@ -71,7 +70,7 @@ function particles() {
 
     var geometry = new THREE.Geometry();
 
-    for (i = 0; i < 500; i++) {
+    for (i = 0; i < 600; i++) {
 
         var vertex = new THREE.Vector3();
         vertex.x = Math.random() * 2000 - 1000;
@@ -84,27 +83,27 @@ function particles() {
 
     parameters = [
         [
-            0x6AE2F7, 2
+            0x6AE2F7, 5
         ],
         [
-            0x8DACDC, 2
+            0x8DACDC, 4
         ],
         [
-            0xA38ACB, 2
+            0xA38ACB, 3
         ],
         [
             0xCE45A8, 2
         ],
         [
-            0xF90387, 2
+            0xF90387, 1
         ]
     ];
 
     for (i = 0; i < parameters.length; i++) {
 
         materials[i] = new THREE.PointsMaterial({
-            color: 0xAAAAAA,//parameters[i][0],
-            size: parameters[i][1]
+            color: 0xFFFFFF,//parameters[i][0],
+            size: parameters[i][1],
         });
 
         particles = new THREE.Points(geometry, materials[i]);

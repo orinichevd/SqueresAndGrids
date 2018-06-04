@@ -2,52 +2,74 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Blocks</title>
-        <meta name="description" content="">
-        <meta name="robots" content="none" />
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="css/main.css">
-    </head>
-    <body>
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Blocks</title>
+    <meta name="description" content="">
+    <meta name="robots" content="none" />
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
 
     <!-- html elements -->
 
     <div id="otez">
         <div id="container">
-      
-        </div>    
-		<div class="logo-container">		
-		 <img id="logo" src="css/main title.png"/> 
-		</div>
-      </div>
+
+        </div>
+        <div class="logo-container">
+            <img id="logo" src="css/main title.png" />
+        </div>
+    </div>
 
 
-       
-    
+
+
     <!-- http://threejs.org -->
 
-        <script src="js/vendor/three.min.js"></script>
+    <script src="js/vendor/three.js"></script>
 
-     <!-- libraries -->
+    <!-- libraries -->
 
-        <script src="js/vendor/libs.min.js"></script> 
-        <script src="js/vendor/detector.js"></script>
-        <script src="js/vendor/stats.min.js"></script>   
-        <script src="js/vendor/noise.js"></script>  
-   
-     <!-- app -->
 
-        <script src="js/scene.js"></script>
-        <script src="js/objects.js"></script>
-        <script src="js/post-process.js"></script> 
 
-       
-        <script src="js/main.js"></script>
 
-    
-    </body>
+    <script src="js/vendor/BokehShader.js"></script>
+    <script src="js/vendor/CopyShader.js"></script>
+
+    <script src="js/vendor/EffectComposer.js"></script>
+
+    <script src="js/vendor/ShaderPass.js"></script>
+    <script src="js/vendor/RenderPass.js"></script>
+    <script src="js/vendor/MaskPass.js"></script>
+    <script src="js/vendor/DigitalGlitch.js"></script>
+    <script src="js/vendor/GlitchPass.js"></script>
+
+    <script src="js/vendor/BokehPass.js"></script>
+
+    <script src="js/vendor/detector.js"></script>
+    <script src="js/vendor/stats.min.js"></script>
+    <script src="js/vendor/noise.js"></script>
+
+
+    <script src='js/vendor/dat.gui.min.js'></script>
+    <!-- app -->
+
+    <script src="js/scene.js"></script>
+    <script src="js/objects.js"></script>
+    <script src="js/post-process.js"></script>
+
+
+    <script src="js/main.js"></script>
+
+
+</body>
+
 </html>
