@@ -1,6 +1,12 @@
 
 'use strict'
-var camera, scene, renderer, light, lightLeft;
+var camera, scene, renderer, light1, light2;
+
+
+var spotLight1 = createSpotlight(0x6AE2F7, -50, 150, 0, Math.PI / 3);
+var spotLight2 = createSpotlight(0xF90387, -50, -390, 0, -Math.PI / 3);
+var spotLight3 = createSpotlight(0x6AE2F7, 50, 150, 0, Math.PI / 3);
+var spotLight4 = createSpotlight(0xF90387, 50, -390, 0, -Math.PI / 3);
 
 var mouseX = 0, mouseY = 0;
 
@@ -34,43 +40,32 @@ function initScene() {
     document.addEventListener('mousemove', onDocumentMouseMove, false);
     document.addEventListener('touchstart', onDocumentTouchStart, false);
     document.addEventListener('touchmove', onDocumentTouchMove, false);
-    document.addEventListener('mouseup', onMouseUp, false);
     window.addEventListener('resize', onWindowResize, false);
 
 }
 
-var spotLight1 = createSpotlight( 0x6AE2F7,0,150,0, Math.PI/3 );
-			var spotLight2 = createSpotlight( 0xF90387, 0, -390, 0, -Math.PI/3 );
-			var spotLight3 = createSpotlight( 0x7F00FF );
-
 function initLights() {
-    var lightHelper1 = new THREE.SpotLightHelper( spotLight1 );
-    var lightHelper2 = new THREE.SpotLightHelper( spotLight2 );
-    var lightHelper3 = new THREE.SpotLightHelper( spotLight3 );
-    scene.add( spotLight1, spotLight2);//, spotLight3 );
-	//scene.add( lightHelper1, lightHelper2);//, lightHelper3 );
+    scene.add(spotLight1, spotLight2, spotLight3, spotLight4);
 
-    scene.add(new THREE.AmbientLight(0x222222));
+    scene.add(new THREE.AmbientLight(0x999999));
 
+    light1 = new THREE.DirectionalLight(0xffffff);
+    light1.position.set(200, 200, 200);
+    scene.add(light1);
 
-    light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(200, 200, 200);
-    //scene.add(light);
+    light2 = new THREE.DirectionalLight(0xFFFFFF);
+    light2.position.set(0, -140, 0);
+    scene.add(light2);
 
-    lightLeft = new THREE.DirectionalLight(0xFFFFFF);
-    lightLeft.position.set(0, -140, 0);
-    //scene.add(lightLeft);
-
-    //scene.fog = new THREE.FogExp2( 0x555555, 0.0020 );
+    scene.fog = new THREE.FogExp2(effectController.fogColor, effectController.fogIntencity);
 
 }
 
-function createSpotlight( color, x, y, z , angle ) {
-    var newObj = new THREE.SpotLight( color, 2 );
+function createSpotlight(color, x, y, z, angle) {
+    var newObj = new THREE.SpotLight(color, 2);
     newObj.castShadow = false;
     newObj.position.y = y;
     newObj.angle = angle;
-    newObj.angle = 0.6;
     newObj.penumbra = 0;
     newObj.intencity = 2;
     newObj.decay = 2;
@@ -90,10 +85,6 @@ function onWindowResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-}
-
-function onMouseUp(event) {
-    restore();
 }
 
 function onDocumentMouseMove(event) {

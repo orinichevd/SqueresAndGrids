@@ -10,13 +10,13 @@ var clength = 150, cwidth = 150, cheight = 150;
 var csize = 10;
 var ccount;
 var  cubes;
-var cubes2;
+
+//grid helper
+var helper;
 
 
 var maxParticleCount = 300;
 var particleCount = 150;
-var r = 800;
-var rHalf = r / 2;
 
 
 
@@ -26,16 +26,16 @@ function initObjects() {
 
     particles();
     initCube();
-    //initGrid();
+    initGrid();
 
 }
 
 function initGrid() {
-    var helper = new THREE.GridHelper(2000, 90, 0xFF0088, 0xFF0088);
-    helper.position.x = 1000;
-    helper.geometry.rotateZ( Math.PI / 2 );
+    helper = new THREE.GridHelper(2000,20,0xFFFFFF, 0xFFFFFF);
+    helper.position.y = -300;
     scene.add(helper);
 }
+
 
 function initCube() {
     cubes = new THREE.Object3D();
