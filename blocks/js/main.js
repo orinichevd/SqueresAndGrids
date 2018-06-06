@@ -52,12 +52,16 @@ function init() {
         bokehPass.uniforms["aperture"].value = effectController.aperture * 0.00001;
         bokehPass.uniforms["maxblur"].value = effectController.maxblur;
         helper.visible = effectController.gridEnabled;
-        scene.fog = new THREE.FogExp2(effectController.fogColor, effectController.fogIntencity);
+        if (effectController.fogEnabled) {
+            scene.fog = new THREE.FogExp2(effectController.fogColor, effectController.fogIntencity);
+        } else {
+            scene.fog = null;
+        }
         light1.visible = effectController.directLightsEnabled;
         light2.visible = effectController.directLightsEnabled;
         spotLight1.visible = effectController.coloredLightsEnabled;
         spotLight2.visible = effectController.coloredLightsEnabled;
-        spotLight3.visible= effectController.coloredLightsEnabled;
+        spotLight3.visible = effectController.coloredLightsEnabled;
         spotLight4.visible = effectController.coloredLightsEnabled;
         for (var i = 0; i < cubes.length; i++) {
             cubes[i].material.opacity = effectController.cubeOpacity;
