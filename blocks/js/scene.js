@@ -34,7 +34,7 @@ function initScene() {
     // Scene
 
     scene = new THREE.Scene();
-    scene.background = 0xFFFFFF;
+    scene.background = new THREE.Color( 0x202020 );
 
 
     document.addEventListener('mousemove', onDocumentMouseMove, false);
