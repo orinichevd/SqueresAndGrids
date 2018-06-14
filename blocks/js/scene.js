@@ -27,15 +27,14 @@ function initScene() {
     // Camera
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 2000);
-    camera.position.z = 300;
-    camera.position.y = 6000;
-    camera.position.x = 6000;
+    camera.position.z = 2500;
+    camera.position.y = -200;
+    camera.position.x = 0;
 
     // Scene
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0x202020 );
-
 
     document.addEventListener('mousemove', onDocumentMouseMove, false);
     document.addEventListener('touchstart', onDocumentTouchStart, false);

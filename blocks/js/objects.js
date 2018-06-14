@@ -31,8 +31,9 @@ function initObjects() {
 }
 
 function initGrid() {
-    helper = new THREE.GridHelper(2000,20,0xFFFFFF, 0xFFFFFF);
+    helper = new THREE.GridHelper(3000,20,0xea38ab, 0xea38ab);
     helper.position.y = -300;
+    //helper.rotation.x = Math.PI/4;
     scene.add(helper);
 }
 
@@ -83,19 +84,19 @@ function particles() {
 
     parameters = [
         [
-            0x6AE2F7, 5
+            0x6AE2F7, 2
         ],
         [
-            0x8DACDC, 4
+            0x8DACDC, 2
         ],
         [
-            0xA38ACB, 3
+            0xA38ACB, 2
         ],
         [
             0xCE45A8, 2
         ],
         [
-            0xF90387, 1
+            0xF90387, 2
         ]
     ];
 

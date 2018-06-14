@@ -2,15 +2,15 @@
 
 var effectController = {
 
-    focus: 410.0,
-    aperture: 0.5,
-    maxblur: 0.2,
+    focus: 350.0,
+    aperture: 3,
+    maxblur: 0.3,
 
     gridEnabled: true,
 
     fogEnabled: true,
-    fogColor: 0x555555,
-    fogIntencity: 0.0020,
+    fogColor: 0x222222,
+    fogIntencity: 0.001,
 
     coloredLightsEnabled: true,
     directLightsEnabled: false,
@@ -155,8 +155,8 @@ function animate() {
     cubes.rotation.z = cubes.rotation.z + 0.01;
 
     if (camera.position.z > 410) {
-        camera.position.z -= 10 * 0.05;
-        camera.position.x -= 10 * 0.05;
+        camera.position.z -= 20;
+        camera.position.y += 10*0.09;
     } else {
         camera.position.x += (mouseX - camera.position.x) * 0.05;
         camera.position.y += (-mouseY - camera.position.y) * 0.05;
@@ -169,3 +169,9 @@ function animate() {
     composer.render(scene, camera);
 
 }
+
+function dist(x1,y1,x2,y2,z1,z2){ 
+    if(!x2) x2=0; 
+    if(!y2) y2=0;
+    return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)); 
+  }
