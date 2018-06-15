@@ -7,7 +7,7 @@ var materials = [],
 
 // cubes
 var clength = 150, cwidth = 150, cheight = 150;
-var csize = 15;
+var csize = 12.5;
 var ccount;
 var  cubes;
 
@@ -42,9 +42,9 @@ function initCube() {
 
     var material = new THREE.MeshPhongMaterial({
         color: 0xFFFFFF,
-        //shading: THREE.FlatShading,
+        shading: THREE.FlatShading,
         transparent: true,
-        opacity: 0.3
+        opacity: 0.4
     });
 
     ccount = clength * cwidth * cheight / (csize * csize * csize);
@@ -55,7 +55,7 @@ function initCube() {
                 cube.position.x = -clength / 2 + i * csize;
                 cube.position.y = -cwidth / 2 + j * csize;
                 cube.position.z = -cheight / 2 + k * csize;
-
+                
                 cubes.add(cube);
             }
         }
@@ -102,7 +102,7 @@ function particles() {
     for (i = 0; i < parameters.length; i++) {
 
         materials[i] = new THREE.PointsMaterial({
-            color: 0xFFFFFF,//parameters[i][0],
+            color: 0x01EDF5,//parameters[i][0],
             size: parameters[i][1],
         });
 

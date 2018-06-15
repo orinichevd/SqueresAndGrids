@@ -3,7 +3,7 @@
 var effectController = {
 
     focus: 350.0,
-    aperture: 3,
+    aperture: 0,
     maxblur: 0.003,
 
     gridEnabled: true,
