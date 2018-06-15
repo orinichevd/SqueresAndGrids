@@ -34,21 +34,6 @@ function postProcess() {
 
 
 
-    /*effectRGB = new THREE.ShaderPass(THREE.RGBShiftShader);
-    effectRGB.uniforms['amount'].value = effectController.effectRGB;
-    effectRGB.renderToScreen = true;*/
-
-
-    //var outputPass = new THREE.ShaderPass(THREE.CopyShader)
-    //outputPass.renderToScreen = true
-    //composer.addPass(outputPass);
-    //composer.addPass(effectRGB);
-
-
-
-
-
-
 }
 
 

@@ -4,7 +4,7 @@ var effectController = {
 
     focus: 350.0,
     aperture: 3,
-    maxblur: 0.3,
+    maxblur: 0.003,
 
     gridEnabled: true,
 
@@ -24,6 +24,7 @@ var effectController = {
 };
 
 var animation = true;
+var stats;
 
 var ticksAfterExplosion;
 var expolosionTime;
@@ -73,7 +74,7 @@ function init() {
         var gui = new dat.GUI();
         gui.add(effectController, "focus", 10.0, 3000.0, 10).onChange(matChanger);
         gui.add(effectController, "aperture", 0, 10, 0.1).onChange(matChanger);
-        gui.add(effectController, "maxblur", 0.0, 3.0, 0.025).onChange(matChanger);
+        gui.add(effectController, "maxblur", 0.0, 1.0, 0.0001).onChange(matChanger);
         gui.add(effectController, "gridEnabled", ).onChange(matChanger);
         gui.add(effectController, "fogEnabled", ).onChange(matChanger);
         gui.addColor(effectController, "fogColor", ).onChange(matChanger);
@@ -81,6 +82,8 @@ function init() {
         gui.add(effectController, "coloredLightsEnabled").onChange(matChanger);
         gui.add(effectController, "directLightsEnabled").onChange(matChanger);
         gui.add(effectController, "explode");
+        stats = new Stats();
+        document.getElementById( 'otez' ).appendChild(stats.domElement);
     }
 
     matChanger();
@@ -167,6 +170,7 @@ function animate() {
     TWEEN.update();
     camera.lookAt(scene.position);
     composer.render(scene, camera);
+    if (debug) stats.update();
 
 }
 

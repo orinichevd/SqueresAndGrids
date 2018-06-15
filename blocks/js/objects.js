@@ -7,7 +7,7 @@ var materials = [],
 
 // cubes
 var clength = 150, cwidth = 150, cheight = 150;
-var csize = 10;
+var csize = 15;
 var ccount;
 var  cubes;
 
@@ -33,7 +33,6 @@ function initObjects() {
 function initGrid() {
     helper = new THREE.GridHelper(3000,20,0xea38ab, 0xea38ab);
     helper.position.y = -300;
-    //helper.rotation.x = Math.PI/4;
     scene.add(helper);
 }
 
@@ -43,7 +42,7 @@ function initCube() {
 
     var material = new THREE.MeshPhongMaterial({
         color: 0xFFFFFF,
-        shading: THREE.FlatShading,
+        //shading: THREE.FlatShading,
         transparent: true,
         opacity: 0.3
     });
@@ -71,7 +70,7 @@ function particles() {
 
     var geometry = new THREE.Geometry();
 
-    for (i = 0; i < 600; i++) {
+    for (i = 0; i < 300; i++) {
 
         var vertex = new THREE.Vector3();
         vertex.x = Math.random() * 2000 - 1000;
