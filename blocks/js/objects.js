@@ -40,9 +40,9 @@ function initGrid() {
 function initCube() {
     cubes = new THREE.Object3D();
 
-    var material = new THREE.MeshPhongMaterial({
+    var material = new THREE.MeshLambertMaterial({
         color: 0xFFFFFF,
-        shading: THREE.FlatShading,
+        //shading: THREE.FlatShading,
         transparent: true,
         opacity: 0.5
     });
