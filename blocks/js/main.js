@@ -2,9 +2,9 @@
 
 var effectController = {
 
-    focus: 350.0,
+    focus: 0,
     aperture: 0,
-    maxblur: 0.003,
+    maxblur: 0,
 
     gridEnabled: true,
 
@@ -169,7 +169,8 @@ function animate() {
     }
     TWEEN.update();
     camera.lookAt(scene.position);
-    composer.render(scene, camera);
+    renderer.render(scene,camera);
+    //composer.render(scene, camera);
     if (debug) stats.update();
 
 }

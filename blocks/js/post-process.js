@@ -12,6 +12,7 @@ function postProcess() {
 
     composer = new THREE.EffectComposer(renderer);
     composer.addPass(new THREE.RenderPass(scene, camera));
+    var effectCopy = new THREE.ShaderPass(THREE.CopyShader);
 
     bokehPass = new THREE.BokehPass( scene, camera, {
         focus: 		410,
@@ -29,7 +30,7 @@ function postProcess() {
     effectGlitch.enabled = false;
 
 
-    //composer.addPass(effectGlitch);
+    composer.addPass(effectGlitch);
     composer.addPass(bokehPass);
 
 
