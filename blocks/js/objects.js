@@ -44,7 +44,7 @@ function initCube() {
         color: 0xFFFFFF,
         shading: THREE.FlatShading,
         transparent: true,
-        opacity: 0.4
+        opacity: 0.5
     });
 
     ccount = clength * cwidth * cheight / (csize * csize * csize);
