@@ -29,7 +29,7 @@ function postProcess() {
     effectGlitch.enabled = false;
 
 
-    composer.addPass(effectGlitch);
+    //composer.addPass(effectGlitch);
     composer.addPass(bokehPass);
 
 
