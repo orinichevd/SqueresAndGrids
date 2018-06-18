@@ -184,6 +184,7 @@ function hideCube() {
     }
     tweenFogMore.start();
     glitchEnabled = false;
+    helper.visible = false;
 }
 
 function showCube() {
@@ -192,6 +193,7 @@ function showCube() {
     }
     tweenFogLess.start();
     glitchEnabled = true;
+    helper.visible = true;
 }
 
 function animate() {
