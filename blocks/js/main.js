@@ -19,6 +19,14 @@ var effectController = {
         for (var i = 0; i < tweenBoom.length; i++) {
             tweenBoom[i].start();
         }
+    },
+
+    hide: function() {
+        hideCube();
+    },
+
+    show: function() {
+        showCube();
     }
 
 };
@@ -31,6 +39,11 @@ var expolosionTime;
 
 var tweenBoom = [];
 var tweenBack = [];
+
+var tweenHide = [];
+var tweenFogMore;
+var tweenShow = [];
+var tweenFogLess;
 
 var helper;
 
@@ -82,6 +95,8 @@ function init() {
         gui.add(effectController, "coloredLightsEnabled").onChange(matChanger);
         gui.add(effectController, "directLightsEnabled").onChange(matChanger);
         gui.add(effectController, "explode");
+        gui.add(effectController, "hide");
+        gui.add(effectController, "show");
         stats = new Stats();
         document.getElementById( 'otez' ).appendChild(stats.domElement);
     }
@@ -89,6 +104,8 @@ function init() {
     matChanger();
     createTweenBoom();
     createTweenBack();
+    createHide();
+    createShow();
     for (var i = 0; i < tweenBoom.length; i++) {
         tweenBoom[i].chain(tweenBack[i]);
     }
@@ -139,6 +156,38 @@ function createTweenBoom() {
         }, 5000)
             .easing(TWEEN.Easing.Cubic.InOut));
     }
+}
+
+function createHide() {
+    for (var i = 0; i < ccount; i++) {
+        var cube = cubes.children[i];
+        tweenHide.push(new TWEEN.Tween(cube.material).to({ opacity: 0 }, 1500)
+            .easing(TWEEN.Easing.Cubic.InOut));
+    }
+    tweenFogMore = new TWEEN.Tween(scene.fog).to({ density: 0.003 }, 1500);
+}
+
+function createShow() {
+    for (var i = 0; i < ccount; i++) {
+        var cube = cubes.children[i];
+        tweenShow.push(new TWEEN.Tween(cube.material).to({ opacity: cubeOpacity }, 1500)
+            .easing(TWEEN.Easing.Cubic.InOut));
+    }
+    tweenFogLess = new TWEEN.Tween(scene.fog).to({ density: 0.001 }, 1500);
+}
+
+function hideCube() {
+    for (var i = 0; i < tweenHide.length; i++) {
+        tweenHide[i].start();
+    }
+    tweenFogMore.start();
+}
+
+function showCube() {
+    for (var i = 0; i < tweenShow.length; i++) {
+        tweenShow[i].start();
+    }
+    tweenFogLess.start();
 }
 
 function animate() {

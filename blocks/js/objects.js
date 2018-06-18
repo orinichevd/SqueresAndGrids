@@ -7,6 +7,7 @@ var materials = [],
 
 // cubes
 var clength = 150, cwidth = 150, cheight = 150;
+var cubeOpacity = 0.4;
 var csize = 12.5;
 var ccount;
 var  cubes;
@@ -44,7 +45,7 @@ function initCube() {
         color: 0xFFFFFF,
         //shading: THREE.FlatShading,
         transparent: true,
-        opacity: 0.5
+        opacity: cubeOpacity
     });
 
     ccount = clength * cwidth * cheight / (csize * csize * csize);
