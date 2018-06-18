@@ -103,7 +103,7 @@ function particles() {
     for (i = 0; i < parameters.length; i++) {
 
         materials[i] = new THREE.PointsMaterial({
-            color: 0x01EDF5,//parameters[i][0],
+            color: 0xFFFFFF,//parameters[i][0],
             size: parameters[i][1],
         });
 
