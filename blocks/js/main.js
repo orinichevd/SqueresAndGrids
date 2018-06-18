@@ -45,6 +45,8 @@ var tweenFogMore;
 var tweenShow = [];
 var tweenFogLess;
 
+var glitchEnabled = true;
+
 var helper;
 
 init();
@@ -181,6 +183,7 @@ function hideCube() {
         tweenHide[i].start();
     }
     tweenFogMore.start();
+    glitchEnabled = false;
 }
 
 function showCube() {
@@ -188,6 +191,7 @@ function showCube() {
         tweenShow[i].start();
     }
     tweenFogLess.start();
+    glitchEnabled = true;
 }
 
 function animate() {
@@ -200,7 +204,7 @@ function animate() {
         for (var i = 0; i < tweenBoom.length; i++) {
             tweenBoom[i].start();
         }
-        effectGlitch.enabled = !effectGlitch.enabled;
+        effectGlitch.enabled = !effectGlitch.enabled  && glitchEnabled;
     }
 
     cubes.rotation.x = cubes.rotation.x + 0.01;
