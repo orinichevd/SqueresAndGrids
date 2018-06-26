@@ -1,4 +1,4 @@
-'use strict'
+
 
 var effectController = {
 
@@ -21,18 +21,18 @@ var effectController = {
         }
     },
 
-    hide: function() {
+    hide: function () {
         hideCube();
     },
 
-    show: function() {
+    show: function () {
         showCube();
     }
 
 };
 
 var animation = true;
-var stats;
+
 
 var ticksAfterExplosion;
 var expolosionTime;
@@ -46,13 +46,17 @@ var tweenShow = [];
 var tweenFogLess;
 
 var glitchEnabled = true;
+var maxRemoveCount = -500;
 
-var helper;
+var gui;
+var stats;
 
 init();
 animate();
 
 function init() {
+
+    animation = true;
 
     initScene();
 
@@ -86,7 +90,7 @@ function init() {
     };
 
     if (debug) {
-        var gui = new dat.GUI();
+        gui = new dat.GUI();
         gui.add(effectController, "focus", 10.0, 3000.0, 10).onChange(matChanger);
         gui.add(effectController, "aperture", 0, 10, 0.1).onChange(matChanger);
         gui.add(effectController, "maxblur", 0.0, 1.0, 0.0001).onChange(matChanger);
@@ -100,7 +104,7 @@ function init() {
         gui.add(effectController, "hide");
         gui.add(effectController, "show");
         stats = new Stats();
-        document.getElementById( 'otez' ).appendChild(stats.domElement);
+        document.getElementById('otez').appendChild(stats.domElement);
     }
 
     matChanger();
@@ -116,7 +120,7 @@ function init() {
     }
 }
 
-var maxRemoveCount = -500;
+
 
 function recomposeBlock(cube) {
     for (var i = 0; i < maxRemoveCount; i++) {
@@ -197,7 +201,7 @@ function showCube() {
 }
 
 function animate() {
-
+    if (!animation) return;
     requestAnimationFrame(animate);
     recomposeBlock(cubes);
     var luck = Math.random();
@@ -206,7 +210,7 @@ function animate() {
         for (var i = 0; i < tweenBoom.length; i++) {
             tweenBoom[i].start();
         }
-        effectGlitch.enabled = !effectGlitch.enabled  && glitchEnabled;
+        effectGlitch.enabled = !effectGlitch.enabled && glitchEnabled;
     }
 
     cubes.rotation.x = cubes.rotation.x + 0.01;
@@ -214,7 +218,7 @@ function animate() {
 
     if (camera.position.z > 410) {
         camera.position.z -= 20;
-        camera.position.y += 10*0.09;
+        camera.position.y += 10 * 0.09;
     } else {
         camera.position.x += (mouseX - camera.position.x) * 0.05;
         camera.position.y += (-mouseY - camera.position.y) * 0.05;
@@ -224,14 +228,49 @@ function animate() {
     }
     TWEEN.update();
     camera.lookAt(scene.position);
-    renderer.render(scene,camera);
+    renderer.render(scene, camera);
     //composer.render(scene, camera);
     if (debug) stats.update();
 
 }
 
-function dist(x1,y1,x2,y2,z1,z2){ 
-    if(!x2) x2=0; 
-    if(!y2) y2=0;
-    return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)+(z2-z1)*(z2-z1)); 
-  }
+function dist(x1, y1, x2, y2, z1, z2) {
+    if (!x2) x2 = 0;
+    if (!y2) y2 = 0;
+    return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
+}
+
+function destroy() {
+    animation = false;
+    var myNode = document.getElementById('container');
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+
+    delete gui;
+    delete stats;
+    delete tweenBoom;
+    delete tweenBack;
+
+    delete tweenHide;
+    delete tweenFogMore;
+    delete tweenShow;
+    delete tweenFogLess;
+
+    delete materials;
+    delete parameters;
+    delete particles;
+    delete cubes;
+    delete helper;
+
+    delete camera;
+    delete scene;
+    delete renderer;
+    delete light1;
+    delete light2;
+
+    delete composer;
+    delete effectGlitch;
+    delete effectRGB;
+    delete bokehPass;
+}

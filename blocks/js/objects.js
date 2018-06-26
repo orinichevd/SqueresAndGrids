@@ -25,7 +25,7 @@ var particleCount = 150;
 // init
 function initObjects() {
 
-    particles();
+    initParticles();
     initCube();
     initGrid();
 
@@ -67,7 +67,7 @@ function initCube() {
 
 }
 
-function particles() {
+function initParticles() {
 
     var geometry = new THREE.Geometry();
 
