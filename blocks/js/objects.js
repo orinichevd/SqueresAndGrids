@@ -10,7 +10,7 @@ var clength = 150, cwidth = 150, cheight = 150;
 var cubeOpacity = 0.4;
 var csize = 12.5;
 var ccount;
-var  cubes;
+var cubes;
 
 //grid helper
 var helper;
@@ -32,7 +32,7 @@ function initObjects() {
 }
 
 function initGrid() {
-    helper = new THREE.GridHelper(3000,20,0xea38ab, 0xea38ab);
+    helper = new THREE.GridHelper(3000, 20, 0xea38ab, 0xea38ab);
     helper.position.y = -300;
     scene.add(helper);
 }
@@ -56,15 +56,52 @@ function initCube() {
                 cube.position.x = -clength / 2 + i * csize;
                 cube.position.y = -cwidth / 2 + j * csize;
                 cube.position.z = -cheight / 2 + k * csize;
-                
+
                 cubes.add(cube);
             }
         }
     }
     cubes.position.y = -140;
-    scene.add(cubes);
+    //scene.add(cubes);
+    var geometriesDrawn = [];
+    var geometriesPicking = [];
+    var matrix = new THREE.Matrix4();
+    var quaternion = new THREE.Quaternion(0,0,0);
+    var color = new THREE.Color();
+    for (var i = 0; i < clength / csize; i++) {
+        for (var j = 0; j < cwidth / csize; j++) {
+            for (var k = 0; k < cheight / csize; k++) {
+                var geometry = new THREE.BoxBufferGeometry();
+                var position = new THREE.Vector3();
+                position.x = -clength / 2 + i * csize;
+                position.y = -cwidth / 2 + j * csize;
+                position.z = -cheight / 2 + k * csize;
+                var scale = new THREE.Vector3(csize-3, csize-3, csize-3);
+                matrix.compose(position, quaternion, scale);
+                geometry.applyMatrix(matrix);
+                // give the geometry's vertices a random color, to be displayed
+                applyVertexColors(geometry, color.setHex(Math.random() * 0xffffff));
+                geometriesDrawn.push(geometry);
+                //geometry = geometry.clone();
+                // give the geometry's vertices a color corresponding to the "id"
+                //applyVertexColors(geometry, color.setHex(i));
+            }
+        }
+    }
+    var objects = new THREE.Mesh(THREE.BufferGeometryUtils.mergeBufferGeometries(geometriesDrawn), material);
+    scene.add(objects);
 
 
+}
+
+
+function applyVertexColors( geometry, color ) {
+    var position = geometry.attributes.position;
+    var colors = [];
+    for ( var i = 0; i < position.count; i ++ ) {
+        colors.push( color.r, color.g, color.b );
+    }
+    geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 }
 
 function initParticles() {
