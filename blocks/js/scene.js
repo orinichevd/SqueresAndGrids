@@ -44,7 +44,7 @@ function initScene() {
 }
 
 function initLights() {
-    scene.add(spotLight1, spotLight2, spotLight3, spotLight4);
+    scene.add(spotLight1, spotLight2);//, spotLight3, spotLight4);
 
     scene.add(new THREE.AmbientLight(0x999999));
 
@@ -61,7 +61,7 @@ function initLights() {
 }
 
 function createSpotlight(color, x, y, z, angle) {
-    var newObj = new THREE.SpotLight(color, 2);
+    var newObj = new THREE.DirectionalLight(color, 2);
     newObj.castShadow = false;
     newObj.position.y = y;
     newObj.angle = angle;

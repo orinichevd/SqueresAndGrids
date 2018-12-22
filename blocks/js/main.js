@@ -122,19 +122,6 @@ function init() {
 
 
 
-function recomposeBlock(cube) {
-    for (var i = 0; i < maxRemoveCount; i++) {
-        var prey = Math.floor(Math.random() * ccount);
-        cube.children[prey].visible = !cube.children[prey].visible;
-    }
-    if (maxRemoveCount < 200) {
-        maxRemoveCount++;
-    }
-
-}
-
-
-
 function createTweenBack() {
     for (var i = 0; i < clength / csize; i++) {
         for (var j = 0; j < cwidth / csize; j++) {
@@ -182,6 +169,7 @@ function createShow() {
     tweenFogLess = new TWEEN.Tween(scene.fog).to({ density: 0.001 }, 1500);
 }
 
+//TODO rewrite
 function hideCube() {
     for (var i = 0; i < tweenHide.length; i++) {
         tweenHide[i].start();
@@ -191,6 +179,8 @@ function hideCube() {
     helper.visible = false;
 }
 
+
+//TODO rewrite
 function showCube() {
     for (var i = 0; i < tweenShow.length; i++) {
         tweenShow[i].start();
@@ -202,8 +192,9 @@ function showCube() {
 
 function animate() {
     if (!animation) return;
+    var time = performance.now();
     requestAnimationFrame(animate);
-    recomposeBlock(cubes);
+
     var luck = Math.random();
 
     if (luck < 0.003) {
@@ -213,8 +204,12 @@ function animate() {
         effectGlitch.enabled = !effectGlitch.enabled && glitchEnabled;
     }
 
-    cubes.rotation.x = cubes.rotation.x + 0.01;
-    cubes.rotation.z = cubes.rotation.z + 0.01;
+    meshCubes.rotation.x = meshCubes.rotation.x + 0.01;
+    meshCubes.rotation.z = meshCubes.rotation.z + 0.01;
+
+
+    cubesBlink();
+    //meshCubes.material.uniforms.time.value = time*0.05;
 
     if (camera.position.z > 410) {
         camera.position.z -= 20;
@@ -234,10 +229,21 @@ function animate() {
 
 }
 
-function dist(x1, y1, x2, y2, z1, z2) {
-    if (!x2) x2 = 0;
-    if (!y2) y2 = 0;
-    return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
+function cubesBlink() {
+    let geometry = meshCubes.geometry;
+    let attribute = geometry.getAttribute('opacity');
+    for (let i=0; i<maxRemoveCount; i++) {
+        let target = Math.trunc(Math.random()*ccount)*24;
+        for (let k=target; k<target+24; k++) {
+            let opacity = attribute.array[k] <= 0.2 ? 0.5 : 0.1;
+            attribute.array[k] = opacity;
+        }
+
+    }
+    attribute.needsUpdate = true;
+    if (maxRemoveCount < 200) {
+        maxRemoveCount++;
+    }
 }
 
 function destroy() {
