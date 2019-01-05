@@ -9,8 +9,7 @@ var materials = [],
 var clength = 150, cwidth = 150, cheight = 150;
 var cubeOpacity = 0.4;
 var csize = 12.5;
-var ccount;
-var cubes;
+var ccount = Math.trunc((clength*cwidth*cheight)/(csize*csize*csize));
 var meshCubes;
 
 
@@ -25,31 +24,9 @@ attribute float opacity;
 varying vec4 vColor;
 varying vec3 vPosition;
 varying float vOpacity;
-varying vec4 lightCl;
-
-#if NUM_DIR_LIGHTS > 0
-  struct DirectionalLight {
-     vec3 direction;
-     vec3 color;
-     int shadow;
-     float shadowBias;
-     float shadowRadius;
-     vec2 shadowMapSize;
-     };
-     uniform DirectionalLight directionalLights[ NUM_DIR_LIGHTS ];
-  #endif
 
 void main(){
     vPosition = position;
-    lightCl = vec4(0.0,0.0,0.0,0.0);
-    for (int i = 0; i< NUM_DIR_LIGHTS; i++) {
-        lightCl.r += directionalLights[i].color.r;
-        lightCl.g += directionalLights[i].color.g;
-        lightCl.b += directionalLights[i].color.b;
-    }
-    lightCl.r = lightCl.r/float(NUM_DIR_LIGHTS);
-    lightCl.g = lightCl.g/float(NUM_DIR_LIGHTS);
-    lightCl.b = lightCl.b/float(NUM_DIR_LIGHTS);
     vColor = color;
     vOpacity = opacity;
 
@@ -58,23 +35,22 @@ void main(){
 
 var fragmentShaderCode = `
 precision highp float;
-        uniform float time;
+
+        uniform bool dropOpacity;
 
         varying float vOpacity;
 		varying vec3 vPosition;
         varying vec4 vColor;
-        varying vec4 lightCl;
-
-        float rnd(float x, float max) {
-            return fract(sin(x)*max);
-        }
 
 		void main() {
             vec4 color = vec4( vColor );
-            color.r = lightCl.r*color.r;
-            color.g = lightCl.g*color.g;
-            color.b = lightCl.b*color.b;
-            color.a = vOpacity;
+            if (!dropOpacity) {
+               color.a = vOpacity;
+            } else {
+                color.a = 0.0;
+            }
+            
+   
 			gl_FragColor = color;
 		}
 `
@@ -85,9 +61,6 @@ var helper;
 
 var maxParticleCount = 300;
 var particleCount = 150;
-
-
-
 
 // init
 function initObjects() {
@@ -106,37 +79,12 @@ function initGrid() {
 
 
 function initCube() {
-    cubes = new THREE.Object3D();
-
-    var material = new THREE.MeshLambertMaterial({
-        color: 0xFFFFFF,
-        //shading: THREE.FlatShading,
-        transparent: true,
-        opacity: cubeOpacity
-    });
-
-    ccount = clength * cwidth * cheight / (csize * csize * csize);
-    for (var i = 0; i < clength / csize; i++) {
-        for (var j = 0; j < cwidth / csize; j++) {
-            for (var k = 0; k < cheight / csize; k++) {
-                var cube = new THREE.Mesh(new THREE.BoxGeometry(csize - 3, csize - 3, csize - 3), material);
-                cube.position.x = -clength / 2 + i * csize;
-                cube.position.y = -cwidth / 2 + j * csize;
-                cube.position.z = -cheight / 2 + k * csize;
-
-                cubes.add(cube);
-            }
-        }
-    }
-    cubes.position.y = -140;
-    //scene.add(cubes);
     var geometriesDrawn = [];
     var matrix = new THREE.Matrix4();
     var quaternion = new THREE.Quaternion(0,0,0);
     for (var i = 0; i < clength / csize; i++) {
         for (var j = 0; j < cwidth / csize; j++) {
-            for (var k = 0; k < cheight / csize; k++) {
-                
+            for (var k = 0; k < cheight / csize; k++) {                
                 var geometry = new THREE.BoxBufferGeometry();
                 var position = new THREE.Vector3();
                 position.x = -clength / 2 + i * csize;
@@ -159,6 +107,7 @@ function initCube() {
         THREE.UniformsLib[ "lights" ]
     
     ] );
+    uniforms.dropOpacity = { value : false };
 
     var shaderMaterial = new THREE.RawShaderMaterial( {
         uniforms: uniforms,

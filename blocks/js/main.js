@@ -37,9 +37,6 @@ var animation = true;
 var ticksAfterExplosion;
 var expolosionTime;
 
-var tweenBoom = [];
-var tweenBack = [];
-
 var tweenHide = [];
 var tweenFogMore;
 var tweenShow = [];
@@ -66,29 +63,6 @@ function init() {
 
     postProcess();
 
-    var matChanger = function () {
-
-        bokehPass.uniforms["focus"].value = effectController.focus;
-        bokehPass.uniforms["aperture"].value = effectController.aperture * 0.00001;
-        bokehPass.uniforms["maxblur"].value = effectController.maxblur;
-        helper.visible = effectController.gridEnabled;
-        if (effectController.fogEnabled) {
-            scene.fog = new THREE.FogExp2(effectController.fogColor, effectController.fogIntencity);
-        } else {
-            scene.fog = null;
-        }
-        light1.visible = effectController.directLightsEnabled;
-        light2.visible = effectController.directLightsEnabled;
-        spotLight1.visible = effectController.coloredLightsEnabled;
-        spotLight2.visible = effectController.coloredLightsEnabled;
-        spotLight3.visible = effectController.coloredLightsEnabled;
-        spotLight4.visible = effectController.coloredLightsEnabled;
-        for (var i = 0; i < cubes.length; i++) {
-            cubes[i].material.opacity = effectController.cubeOpacity;
-        }
-
-    };
-
     if (debug) {
         gui = new dat.GUI();
         gui.add(effectController, "focus", 10.0, 3000.0, 10).onChange(matChanger);
@@ -108,83 +82,48 @@ function init() {
     }
 
     matChanger();
-    createTweenBoom();
-    createTweenBack();
     createHide();
     createShow();
-    for (var i = 0; i < tweenBoom.length; i++) {
-        tweenBoom[i].chain(tweenBack[i]);
-    }
-    for (var i = 0; i < tweenBoom.length; i++) {
-        tweenBack[i].start();
-    }
 }
 
+function matChanger () {
 
-
-function createTweenBack() {
-    for (var i = 0; i < clength / csize; i++) {
-        for (var j = 0; j < cwidth / csize; j++) {
-            for (var k = 0; k < cheight / csize; k++) {
-                var cube = cubes.children[i + j * (clength / csize) + k * (clength / csize) * (cwidth / csize)]
-                tweenBack.push(new TWEEN.Tween(cube.position).to({
-                    x: -clength / 2 + i * csize,
-                    y: -cwidth / 2 + j * csize,
-                    z: -cheight / 2 + k * csize
-                }, 1000)
-                    .easing(TWEEN.Easing.Cubic.InOut));
-            }
-        }
+    bokehPass.uniforms["focus"].value = effectController.focus;
+    bokehPass.uniforms["aperture"].value = effectController.aperture * 0.00001;
+    bokehPass.uniforms["maxblur"].value = effectController.maxblur;
+    helper.visible = effectController.gridEnabled;
+    if (effectController.fogEnabled) {
+        scene.fog = new THREE.FogExp2(effectController.fogColor, effectController.fogIntencity);
+    } else {
+        scene.fog = null;
     }
-}
+    light1.visible = effectController.directLightsEnabled;
+    light2.visible = effectController.directLightsEnabled;
+    spotLight1.visible = effectController.coloredLightsEnabled;
+    spotLight2.visible = effectController.coloredLightsEnabled;
+    spotLight3.visible = effectController.coloredLightsEnabled;
+    spotLight4.visible = effectController.coloredLightsEnabled;
 
-
-function createTweenBoom() {
-    for (var i = 0; i < ccount; i++) {
-        var cube = cubes.children[i];
-        tweenBoom.push(new TWEEN.Tween(cube.position).to({
-            x: cube.position.x + Math.random() * 400 - 200,
-            y: cube.position.y + Math.random() * 400 - 200,
-            z: cube.position.z + Math.random() * 400 - 200
-        }, 5000)
-            .easing(TWEEN.Easing.Cubic.InOut));
-    }
-}
+};
 
 function createHide() {
-    for (var i = 0; i < ccount; i++) {
-        var cube = cubes.children[i];
-        tweenHide.push(new TWEEN.Tween(cube.material).to({ opacity: 0 }, 1500)
-            .easing(TWEEN.Easing.Cubic.InOut));
-    }
     tweenFogMore = new TWEEN.Tween(scene.fog).to({ density: 0.003 }, 1500);
 }
 
 function createShow() {
-    for (var i = 0; i < ccount; i++) {
-        var cube = cubes.children[i];
-        tweenShow.push(new TWEEN.Tween(cube.material).to({ opacity: cubeOpacity }, 1500)
-            .easing(TWEEN.Easing.Cubic.InOut));
-    }
     tweenFogLess = new TWEEN.Tween(scene.fog).to({ density: 0.001 }, 1500);
 }
 
-//TODO rewrite
 function hideCube() {
-    for (var i = 0; i < tweenHide.length; i++) {
-        tweenHide[i].start();
-    }
+    meshCubes.material.uniforms.dropOpacity.value = true;
     tweenFogMore.start();
     glitchEnabled = false;
     helper.visible = false;
 }
 
 
-//TODO rewrite
 function showCube() {
-    for (var i = 0; i < tweenShow.length; i++) {
-        tweenShow[i].start();
-    }
+    meshCubes.material.uniforms.dropOpacity.value = false;
     tweenFogLess.start();
     glitchEnabled = true;
     helper.visible = true;
@@ -192,15 +131,11 @@ function showCube() {
 
 function animate() {
     if (!animation) return;
-    var time = performance.now();
     requestAnimationFrame(animate);
 
     var luck = Math.random();
 
     if (luck < 0.003) {
-        for (var i = 0; i < tweenBoom.length; i++) {
-            tweenBoom[i].start();
-        }
         effectGlitch.enabled = !effectGlitch.enabled && glitchEnabled;
     }
 
@@ -209,7 +144,6 @@ function animate() {
 
 
     cubesBlink();
-    //meshCubes.material.uniforms.time.value = time*0.05;
 
     if (camera.position.z > 410) {
         camera.position.z -= 20;
@@ -233,6 +167,7 @@ function cubesBlink() {
     let geometry = meshCubes.geometry;
     let attribute = geometry.getAttribute('opacity');
     for (let i=0; i<maxRemoveCount; i++) {
+        
         let target = Math.trunc(Math.random()*ccount)*24;
         for (let k=target; k<target+24; k++) {
             let opacity = attribute.array[k] <= 0.2 ? 0.5 : 0.1;
@@ -255,8 +190,6 @@ function destroy() {
 
     delete gui;
     delete stats;
-    delete tweenBoom;
-    delete tweenBack;
 
     delete tweenHide;
     delete tweenFogMore;
@@ -266,7 +199,6 @@ function destroy() {
     delete materials;
     delete parameters;
     delete particles;
-    delete cubes;
     delete helper;
 
     delete camera;
